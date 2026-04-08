@@ -1,0 +1,63 @@
+
+<div style="max-width:480px;margin:0 auto;padding:1.5rem 0;">
+  <h2 style="font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;">Email signature QR code</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1.5rem;">This QR links to your hosted contact page. Steps below.</p>
+
+  <div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;">
+    <div id="qr-wrap" style="background:#fff;padding:16px;border-radius:8px;border:0.5px solid var(--color-border-tertiary);"></div>
+    <p style="font-size:12px;color:var(--color-text-secondary);text-align:center;max-width:300px;line-height:1.5;">Once you host <code style="font-size:11px;background:var(--color-background-secondary);padding:2px 5px;border-radius:4px;">ronak-contact.html</code>, replace the URL below with your live link and re-generate.</p>
+
+    <div style="width:100%;">
+      <label style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-secondary);display:block;margin-bottom:6px;">Your contact page URL</label>
+      <input id="url-input" type="text" value="https://yoursite.com/ronak-contact"
+        style="width:100%;font-size:13px;padding:8px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);" />
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+      <button onclick="generate()" style="font-size:13px;padding:8px 18px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;">Re-generate ↻</button>
+      <button onclick="downloadQR()" style="font-size:13px;padding:8px 18px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;">Download PNG ↓</button>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.25rem;">
+    <p style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px;letter-spacing:.04em;">HOW TO USE</p>
+    <ol style="font-size:13px;color:var(--color-text-secondary);line-height:2;padding-left:1.2rem;">
+      <li>Download <code style="font-size:11px;background:var(--color-background-primary);padding:1px 5px;border-radius:3px;">ronak-contact.html</code> from the file above</li>
+      <li>Host it — GitHub Pages, Netlify, or any web host (free options work)</li>
+      <li>Paste your live URL in the field above → Re-generate</li>
+      <li>Download the QR PNG → insert it into your email signature</li>
+    </ol>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+let qr = null;
+
+function generate() {
+  const url = document.getElementById('url-input').value.trim();
+  const wrap = document.getElementById('qr-wrap');
+  wrap.innerHTML = '';
+  qr = new QRCode(wrap, {
+    text: url,
+    width: 180,
+    height: 180,
+    colorDark: '#1a1a18',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
+
+function downloadQR() {
+  setTimeout(() => {
+    const img = document.querySelector('#qr-wrap img');
+    if (!img) return;
+    const a = document.createElement('a');
+    a.href = img.src;
+    a.download = 'ronak-signature-qr.png';
+    a.click();
+  }, 200);
+}
+
+generate();
+</script>
